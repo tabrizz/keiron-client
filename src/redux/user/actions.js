@@ -3,16 +3,21 @@ import axios from "axios"
 
 const { SET_CURRENT_USER, SET_CURRENT_USER_LIST } = types
 
-export const setCurrentUser = (user) => {
-  return (dispatch) => {
-    return axios.post("/login", user)
-      .then(res => {
-        localStorage.setItem('token', res.data.token)
+export const setCurrentUser = (user, history) => {
+  return async (dispatch) => {
+    try {
+      const { data, status } = await axios.post("/login", user)
+      if (status === 200) {
+        localStorage.setItem('token', data.token)
         dispatch({
           type: SET_CURRENT_USER,
-          payload: res.data.user
+          payload: data.user
         })
-      })
+        history.push("/")
+      }
+    } catch (err) {
+      console.log('Error login')
+    }
   }
 }
 

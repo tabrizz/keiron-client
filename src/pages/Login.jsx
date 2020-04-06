@@ -5,13 +5,15 @@ import { connect } from "react-redux";
 import * as yup from "yup";
 
 import { setCurrentUser } from "../redux/user/actions";
+import { createStructuredSelector } from "reselect";
+import { selectCurrentUser } from "../redux/user/selector";
 
 const loginSchema = yup.object({
   email: yup.string().required(),
   password: yup.string().required(),
 });
 
-const Login = ({ login, history }) => {
+const Login = ({ login, currentUser, history }) => {
   return (
     <Row className="justify-content-md-center">
       <Col md={6} className="p-4">
@@ -20,10 +22,10 @@ const Login = ({ login, history }) => {
             initialValues={{ email: "", password: "" }}
             validationSchema={loginSchema}
             onSubmit={(data) => {
-              login(data);
-              setTimeout(() => {
-                history.push("/");
-              }, 1700);
+              login(data, history);
+              // setTimeout(() => {
+              //   history.push("/");
+              // }, 1700);
             }}
           >
             {({ handleSubmit, touched, errors }) => (
@@ -66,9 +68,13 @@ const Login = ({ login, history }) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  login(user) {
-    dispatch(setCurrentUser(user));
+  login(user, history) {
+    dispatch(setCurrentUser(user, history));
   },
 });
 
-export default connect(null, mapDispatchToProps)(Login);
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser,
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
