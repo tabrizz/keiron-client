@@ -1,0 +1,8 @@
+const ticketActionTypes = {
+  CREATE_TICKET: "CREATE_TICKET",
+  UPDATE_TICKET: "UPDATE_TICKET",
+  LIST_TICKETS: "LIST_TICKETS",
+  LIST_TICKETS_BY_USER: "LIST_TICKETS_BY_USER"
+};
+
+export default ticketActionTypes

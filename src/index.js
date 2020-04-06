@@ -1,12 +1,50 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from "react-router-dom";
+import { Provider } from 'react-redux'
+import { PersistGate } from "redux-persist/integration/react";
+import axios from 'axios';
+
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { store } from './redux/store'
+import { persistor } from './redux/store'
+
+const token = localStorage.getItem("token");
+axios.defaults.baseURL = 'http://localhost:8000/api';
+// axios.defaults.headers.post['Content-Type'] = 'application/json';
+if (!!token) {
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+}
+
+axios.interceptors.request.use(request => {
+  console.log('request:', request);
+  // Edit request config
+  return request;
+}, error => {
+  console.log(error);
+  return Promise.reject(error);
+});
+
+axios.interceptors.response.use(response => {
+  console.log('response', response);
+  // Edit response config
+  return response;
+}, error => {
+  console.log(error);
+  return Promise.reject(error);
+});
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <BrowserRouter>
+        <PersistGate persistor={persistor}>
+          <App />
+        </PersistGate>
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
