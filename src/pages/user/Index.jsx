@@ -1,15 +1,15 @@
-import React, { useEffect } from "react";
-import { Card, Button, Badge, Row } from "react-bootstrap";
-import { Redirect } from "react-router-dom";
-import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
+import React, { useEffect } from 'react';
+import { Card, Button, Badge, Row } from 'react-bootstrap';
+import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 
-import { selectCurrentUser } from "../../redux/user/selector";
-import { listTicketsByUser, updateTicket } from "../../redux/ticket/actions";
-import { selectTicketsListByUser } from "../../redux/ticket/selector";
+import { selectCurrentUser } from '../../redux/user/selector';
+import { listTicketsByUser, updateTicket } from '../../redux/ticket/actions';
+import { selectTicketsListByUser } from '../../redux/ticket/selector';
 
 const Index = ({ getTickets, ticketsList, takeTicket, currentUser }) => {
-  console.log("new ticketslist", ticketsList);
+  console.log('new ticketslist', ticketsList);
   useEffect(() => {
     const fetchData = async () => {
       await getTickets(currentUser.id);
@@ -17,7 +17,7 @@ const Index = ({ getTickets, ticketsList, takeTicket, currentUser }) => {
     fetchData();
   }, [getTickets, currentUser.id]);
 
-  if (currentUser.user_types_id !== 2) {
+  if (currentUser.typeUserId !== 2) {
     return <Redirect to="/" />;
   }
   return (
@@ -27,13 +27,13 @@ const Index = ({ getTickets, ticketsList, takeTicket, currentUser }) => {
           key={ticket.id}
           border="primary"
           className="m-4"
-          style={{ width: "18rem" }}
+          style={{ width: '18rem' }}
         >
           <Card.Header>Ticket {ticket.id}</Card.Header>
           <Card.Body>
             <Card.Title>{ticket.description}</Card.Title>
             <Card.Text>
-              Ticket pedido:{" "}
+              Ticket pedido:{' '}
               {ticket.taken ? (
                 <Badge variant="success">SI</Badge>
               ) : (

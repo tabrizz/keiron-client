@@ -1,21 +1,21 @@
-import React from "react";
-import { Navbar, Nav, Button } from "react-bootstrap";
-import { createStructuredSelector } from "reselect";
-import { connect } from "react-redux";
+import React from 'react';
+import { Navbar, Nav, Button } from 'react-bootstrap';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
 
-import { persistor } from "../../redux/store";
-import { withRouter, Link } from "react-router-dom";
-import { selectCurrentUser } from "../../redux/user/selector";
+import { persistor } from '../../redux/store';
+import { withRouter, Link } from 'react-router-dom';
+import { selectCurrentUser } from '../../redux/user/selector';
 
 const Header = ({ currentUser, history }) => {
   let navItems;
-  if (currentUser?.user_types_id === 1) {
+  if (currentUser?.typeUserId === 1) {
     navItems = (
       <Nav.Link to="/admin" as={Link}>
         Administrador
       </Nav.Link>
     );
-  } else if (currentUser?.user_types_id === 2) {
+  } else if (currentUser?.typeUserId === 2) {
     navItems = (
       <Nav.Link to="/user" as={Link}>
         Usuarios
@@ -26,17 +26,17 @@ const Header = ({ currentUser, history }) => {
   }
 
   return (
-    <Navbar bg="dark" variant="dark">
+    <Navbar bg="info" variant="dark">
       <Navbar.Brand to="/" as={Link}>
-        Keiron Test
+        Keiron NodeJS Test
       </Navbar.Brand>
       <Nav className="mr-auto">{navItems}</Nav>
       <Navbar.Collapse className="justify-content-end">
         <Button
           onClick={() => {
             persistor.purge();
-            localStorage.removeItem("token");
-            history.push("/login");
+            localStorage.removeItem('token');
+            history.push('/login');
           }}
           variant="danger"
         >

@@ -1,16 +1,17 @@
-import React, { useEffect } from "react";
-import { Form, Button, Row, Col } from "react-bootstrap";
-import { Formik, Field } from "formik";
-import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
-import * as yup from "yup";
+import React, { useEffect } from 'react';
+import { Form, Button, Row, Col } from 'react-bootstrap';
+import { Formik, Field } from 'formik';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import * as yup from 'yup';
 
-import { setUserList } from "../../../redux/user/actions";
-import { createTicket } from "../../../redux/ticket/actions";
-import { selectUserList } from "../../../redux/user/selector";
+import { setUserList } from '../../../redux/user/actions';
+import { createTicket } from '../../../redux/ticket/actions';
+import { selectUserList } from '../../../redux/user/selector';
 
 const ticketSchema = yup.object({
   description: yup.string().required(),
+  selectedUser: yup.string().required(),
 });
 
 const Create = ({ getUsers, userList, createNewTicket, history }) => {
@@ -25,15 +26,16 @@ const Create = ({ getUsers, userList, createNewTicket, history }) => {
     <Row className="justify-content-md-center">
       <Col md={6} className="p-4">
         <Formik
+          enableReinitialize={true}
           initialValues={{
-            description: "",
-            selectedUser: userList.length > 0 ? userList[0].id : "",
+            description: '',
+            selectedUser: '',
           }}
           validationSchema={ticketSchema}
           onSubmit={async (data) => {
             // create ticket
             await createNewTicket(data);
-            history.push("/admin");
+            history.push('/admin');
           }}
         >
           {({
@@ -62,19 +64,22 @@ const Create = ({ getUsers, userList, createNewTicket, history }) => {
                 <Form.Label>Usuario</Form.Label>
                 <Form.Control
                   name="selectedUser"
-                  value={values.selectedUser}
+                  // value={values.selectedUser}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   as="select"
                   custom
                 >
-                  {/* <option>1</option> */}
+                  <option value={``}>Seleccione un elemento</option>
                   {userList.map((user) => (
                     <option key={user.id} value={user.id}>
                       {user.name}
                     </option>
                   ))}
                 </Form.Control>
+                <Form.Text className="text-danger">
+                  {touched.selectedUser && errors.selectedUser}
+                </Form.Text>
               </Form.Group>
               <Button variant="primary" type="submit">
                 Crear

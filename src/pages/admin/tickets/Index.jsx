@@ -1,14 +1,14 @@
-import React from "react";
-import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
-import { Redirect, Switch, Route } from "react-router-dom";
+import React from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { Redirect, Switch, Route } from 'react-router-dom';
 
-import { selectCurrentUser } from "../../../redux/user/selector";
-import TicketList from "./TicketList";
-import Create from "./Create";
+import { selectCurrentUser } from '../../../redux/user/selector';
+import TicketList from './TicketList';
+import Create from './Create';
 
 const Index = ({ currentUser, match }) => {
-  if (currentUser?.user_types_id !== 1) {
+  if (currentUser?.typeUserId !== 1) {
     return <Redirect to="/" />;
   }
   return (
